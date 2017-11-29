@@ -1,0 +1,52 @@
+[그룹함수(집계함수)]
+COUNT(칼럼명) : 레코드의 숫자
+ > SELECT * FROM EMPLOYEE;
+ > SELECT COUNT(*) FROM EMPLOYEE;
+
+ > SELECT DNO FROM EMPLOYEE;
+ > SELECT COUNT(DNO) FROM EMPLOYEE;
+
+ > SELECT DISTINCT DNO FROM EMPLOYEE;
+ > SELECT COUNT(DISTINCT DNO) FROM EMPLOYEE;
+ > SELECT COUNT(DISTINCT DNO) AS "DNO_COUNT" FROM EMPLOYEE;
+
+ > SELECT COUNT(COMMISSION) FROM EMPLOYEE;
+ : COUNT 함수는 NULL은 갯수를 세지 않음.
+---------------------------------------------------------------------------------------------
+SUM(칼럼명) : 조회된 레코드의 해당 칼럼 총합
+AVG(칼럼명) : 조회된 레코드의 해당 칼럼값 평균
+MIN(칼럼명), MAX(칼럼명) : 조회된 레코드의 해당 칼럼 최대값 행, 최소값 행
+ > SELECT SALARY FROM EMPLOYEE;
+ > SELECT SUM(SALARY) FROM EMPLOYEE;
+ > SELECT AVG(SALARY) FROM EMPLOYEE;
+ > SELECT MIN(SALARY) FROM EMPLOYEE;
+ > SELECT MAX(SALARY) FROM EMPLOYEE;
+
+!주의사항!
+ > SELECT ENAME, SUM(SALARY) FROM EMPLOYEE; // 에러남!
+---------------------------------------------------------------------------------------------
+GROUP BY : 위의 함수들을 적용할 그룹 옵션
+ > SELECT SUM(SALARY) FROM EMPLOYEE GROUP BY(DNO);
+ > SELECT DNO, SUM(SALARY) FROM EMPLOYEE GROUP BY(DNO);
+ : GROUP BY로 묶인 칼럼은 같이 조회가 가능함!
+----------------------------------------------------------------------------------------------
+HAVING : GROUP BY로 묶어서 집계해 놓은 상태에서 조건절 붙일 때
+ > SELECT DNO, SUM(SALARY) FROM EMPLOYEE GROUP BY(DNO)
+	HAVING SUM(SALARY)>9000;
+----------------------------------------------------------------------------------------------
+그룹함수 중첩 사용
+ > SELECT MIN(AVG(SALARY)) FROM EMPLOYEE GROUP BY(DNO);
+
+
+
+
+
+
+
+
+
+
+
+
+
+

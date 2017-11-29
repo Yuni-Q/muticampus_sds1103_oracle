@@ -1,0 +1,103 @@
+* 조인(Join) 
+ : 데이터베이스에서는 데이터가 중복되는 경우 여러 이상 현상이 발생할 수 있기 때문에 중복되지 않도록 2개 이상의 테이블로 나누어서 정보를 저장해 놓음. 이 때 원하는 정보를 2개이상의 테이블에서 동시에 가져올 때 조인을 활용함.
+
+동등조인(Equi-Join) 
+ : 사용빈도 매우 높음! 
+ : 조인 대상이 되는 두 테이블에서 공통적으로 족재하는 칼럼의 값이 일치되는
+   행을 연결하여 조회결과 생성
+
+ : 테이블 명이 길어서 불편할 때에는 아래와 같이 테이블 이름에 별칭 붙여놓고 씀.
+ > SELECT * FROM EMPLOYEE, DEPARTMENT 
+	WHERE EMPLOYEE.DNO=DEPARTMENT.DNO;
+ > SELECT * FROM EMPLOYEE E,DEPARTMENT D
+	WHERE E.DNO=D.DNO;
+
+ : 조회하고자 하는 칼럼명이 DNO 같이 중복되는 경우에는 테이블명 명시해야 함.
+ > SELECT ENO, ENAME, EMPLOYEE.DNO, DNAME 
+	FROM EMPLOYEE, DEPARTMENT
+	WHERE EMPLOYEE.DNO=DEPARTMENT.DNO;
+ > SELECT ENO, ENAME, E.DNO, DNAME 
+	FROM EMPLOYEE E, DEPARTMENT D
+	WHERE E.DNO=D.DNO;
+
+ : 두 테이블을 조인하면서 부가 조건을 같이 제시할 때 AND 연산자 사용
+ > SELECT ENO, ENAME, E.DNO, DNAME
+	FROM EMPLOYEE E, DEPARTMENT D
+	WHERE E.DNO=D.DNO AND ENO=7788;
+
+ : 위의 직원번호=7788 같은 조건에 E.DNO=D.DNO 조인 조건이 같이 있는게 
+  매우 빈번하고 못마땅함. 그래서 아래의 문법이 추가됨.
+ > SELECT ENO, ENAME, DNO, DNAME 
+	FROM EMPLOYEE E NATURAL JOIN DEPARTMENT D
+	WHERE E.ENO=7788;
+
+ : 두 테이블에 공통 이름인 칼럼이 두 쌍 이상인 경우에는 아래와 같이 
+  칼럼명을 특정하는 문법 사용함.
+ > SELECT ENO, ENAME, DNO, DNAME
+	FROM EMPLOYEE E JOIN DEPARTMENT D
+	USING(DNO)
+	WHERE E.ENO=7788;
+----------------------------------------------------------------------------------------------
+ * EQUI 조인 수행시 (1) WHERE 조건명시, (2)NATURAL JOIN, (3) JOIN-USING 문법이 있음. 아래 세 문제를 (1),(2),(3) 문법을 각각 사용하여 작성하시오.
+
+exercise 1: 조인을 사용하여 뉴욕에서 근무하는 사원의 이름과 급여를 조회.
+exercise 2: 조인을 사용하여 ACCOUNTING 부서 소속 사원의 이름과 입사일 조회.
+exercise 3: 직급이 MANAGER인 사원의 이름, 부서명을 조회.
+------------------------------------------------------------------------------------------------
+[NON-EQUI조인] 
+ : 조인 조건에 =가 아닌 >,<,BETWEEN 등을 사용하는 조인
+ > SELECT * FROM SALGRADE;
+ > SELECT ENAME, SALARY, GRADE
+	FROM EMPLOYEE, SALGRADE
+	WHERE SALARY>=LOSAL AND SALARY<HISAL;
+
+ : 3개의 테이블을 조인해서 직원이름, 급여, 부서이름, 급여등급을 조회
+ > SELECT ENAME, SALARY, DNAME, GRADE
+	FROM EMPLOYEE, DEPARTMENT, SALGRADE
+	WHERE (EMPLOYEE.DNO=DEPARTMENT.DNO)
+		AND (SALARY BETWEEN LOSAL AND HISAL);
+-----------------------------------------------------------------------------------------------
+[SELF 조인]
+ : 하나의 테이블을 복사해서 2개의 테이블이라고 생각하고 조인하는 경우
+ > SELECT E1.ENO AS "직원번호", E1.ENAME AS "직원이름",
+	E2.ENO AS "매니저번호", E2.ENAME AS "매니저이름"
+	FROM EMPLOYEE E1, EMPLOYEE E2
+	WHERE E1.MANAGER=E2.ENO;
+-----------------------------------------------------------------------------------------------
+[OUTER 조인] 
+ : 조인 조건 칼럼중에 NULL값을 가진 레코드가 있는 경우 일반적인 조인에서는 
+  해당 레코드가 조회 결과에 포함되지 않음. 조건 칼럼에 값이 없는 레코드도 조인 
+  결과에 포함시키고자 하는 경우 OUTER 조인을 사용함.
+ > SELECT E1.ENO, E1.ENAME, E2.ENO, E2.ENAME
+	FROM EMPLOYEE E1, EMPLOYEE E2
+	WHERE E1.MANAGER=E2.ENO(+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

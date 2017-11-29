@@ -1,0 +1,42 @@
+1. 접속 명령어 conn
+ > conn system/sds1103
+
+2. 관리자 계정 system으로 접속한 후 다른 계정 생성하기
+ > create user sds identified by sds1103;
+
+3. 관리자에서 생성한 계정 활성화 및 권한 주기
+ > alter user sds account unlock;
+ > grant create session, create table, create sequence, create view,
+   resource to sds;
+
+4. 교육용 계정 hr 계정을 활성화 및 비밀번호 설정해주기
+ > alter user hr account unlock;
+ > alter user hr identified by sds1103;
+
+5. hr 계정 접속한 상태에서 미리 만들어져 있는 테이블 목록보기
+ > select table_name from tabs;
+
+6. sql*plus 에서 화면에 보여지는 select 결과화면 가로세로 키우기
+ > set linesize 300;
+ > set pagesize 300;
+
+7. dropbox 에 있는 EMP_EXAMPLE.sql 파일 통으로 실행시키기
+ > @c:EMP_EXAMPLE.sql
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,96 @@
+[View : 가상테이블. 실제 테이블은 저장 매체 디스크에 공간이 할당되어 데이터를 
+	물리적으로 저장하고 있지만 뷰는 테이블만큼 디스크공간이 할당되지 않음]
+ > SELECT ENO, ENAME, DNO, DNAME, SALARY
+	FROM EMPLOYEE NATURAL JOIN DEPARTMENT;
+ * 급여가 2000 이상인 직원의 이름, 부서이름, 급여를 조회.
+ > SELECT ENAME, DNAME, SALARY
+	FROM 
+		(SELECT ENO, ENAME, DNO, DNAME, SALARY
+		FROM EMPLOYEE NATURAL JOIN DEPARTMENT)
+	WHERE
+		SALARY >= 2000;
+
+ 위와 같은 직원정보와 부서정보를 조인하는 서브쿼리를 자주 활용한다면 ? 
+ 뷰를 만들어 놓으면 이후에 편리함!
+ > CREATE [ OR REPLACE ] VIEW EMP_DEP_VIEW
+	AS
+	 SELECT ENO, ENAME, DNO, DNAME, SALARY
+	FROM EMPLOYEE NATURAL JOIN DEPARTMENT;
+ > SELECT ENAME, DNAME, SALARY
+	FROM 
+		EMP_DEP_VIEW
+	WHERE 
+		SALARY>2000;
+---------------------------------------------------------------------------------------------
+단순뷰 : 기반 테이블이 하나
+복합뷰 : 기반 테이블 두개 이상 조인
+---------------------------------------------------------------------------------------------
+ > CREATE VIEW EMP_SALES
+	AS
+	SELECT * FROM EMPLOYEE WHERE JOB='SALESMAN';
+ > SELECT * FROM EMP_SALES;
+---------------------------------------------------------------------------------------------
+[뷰의 필요성]
+ - 편의성 : 자주 조회하는 SELECT 문에 이름 붙여서 마치 테이블인척 문법 가능
+ - 보안성 : 모든 사용자에게 테이블 전체 내용을 항상 공개하지 않음.
+	사용자에 따라 데이터의 일부만 접근하고 조회할 수 있도록 하는 용도.
+---------------------------------------------------------------------------------------------
+[그룹 함수를 활용하는 뷰 : 칼럼명 별칭 필수]
+ > CREATE OR REPLACE VIEW EMP_SALARY_VIEW
+	AS
+	SELECT 
+		DNO AS "부서번호",
+		SUM(SALARY) AS "급여 합",
+		AVG(SALARY) AS "급여 평균"
+	FROM 
+		EMPLOYEE
+	GROUP BY
+		DNO;
+
+ > SELECT * FROM EMP_SALARY_VIEW;
+ > SELECT * FROM EMP_SALARY_VIEW WHERE 부서번호=10;
+----------------------------------------------------------------------------------------------
+[뷰 삭제]
+ > DROP VIEW EMP_SALARY_VIEW;
+----------------------------------------------------------------------------------------------
+[뷰의 옵션들]
+CREATE [옵션자리1] VIEW 뷰이름 AS 서브쿼리 [옵션자리2];
+> 
+CREATE
+	[OR REPLACE] [FORCE | NOFORCE]
+VIEW 뷰이름
+AS 서브쿼리
+	[WITH CHECK OPTION] [WITH READ ONLY]
+
+[OR REPLACE] :  만약 지금 생성하는 이름의 뷰가 이미 존재하면 덮어씌움.
+[FORCE] : 아직 기반 테이블이 없어도 일단 뷰는 무조건 만들어라.
+	보통 FORCE 라고 적지않으면 디폴트 NOFORCE 임.
+[WITH CHECK OPTION] : INSERT, UPDATE에 제약 걸기
+[WITH READ ONLY] : INSERT, UPDATE, DELETE 안됨. SELECT만 허용.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

@@ -1,0 +1,43 @@
+[SEQUENCE 시퀀스 : MYSQL의 auto_increment 기능과 유사]
+ > CREATE TABLE BOOK(
+	BOOK_NUM NUMBER PRIMARY KEY,
+	TITLE VARCHAR2(50),
+	PUBLISHER VARCHAR2(50),
+	PRICE NUMBER
+    );
+ > CREATE SEQUENCE BOOK_SEQ
+	START WITH 50
+	INCREMENT BY 2;
+ > SELECT BOOK_SEQ.CURRVAL FROM DUAL; // 시퀀스 만들자 마자는 에러남.
+ > SELECT BOOK_SEQ.NEXTVAL FROM DUAL;
+
+[실제 사용 예시]
+ > INSERT INTO BOOK(BOOK_NUM, TITLE, PUBLISHER, PRICE)
+	VALUES(BOOK_SEQ.NEXTVAL, '자바의 정석', 'SDS', 20000);
+---------------------------------------------------------------------------------------------
+[시퀀스 수정 및 삭제]
+ ALTER SEQUENCE 시퀀스 이름
+	[옵션은 START WITH 불가 나머지 옵션은 CREATE 할 때 처럼 넣으면 됨]
+ > ALTER SEQUENCE BOOK_SEQ
+	INCREMENT BY 10;
+ DROP SEQUENCE 시퀀스 이름
+ > DROP SEQUENCE BOOK_SEQ;
+----------------------------------------------------------------------------------------------
+[INDEX 인덱스 : 레코드가 많아져서 검색 시간이 오래 걸릴때 검색효율을 위해 사용]
+장점 : 특정 칼럼의 값을 WHERE 조건에서 많이 활용할 때 속도 빨라짐.
+단점 : 인덱스를 저장시킬 공간 필요. 초기 인덱스 생성시간 필요함.
+
+CREATE INDEX BOOK_IDX_TITLE
+ON BOOK(TITLE);
+
+
+
+
+
+
+
+
+
+
+
+
